@@ -1,0 +1,4 @@
+Options +FollowSymLinks
+RewriteEngine on
+RewriteRule ^post$ /api_post.php
+RewriteRule ^get$ /api_get.php
