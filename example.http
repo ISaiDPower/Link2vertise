@@ -1,0 +1,14 @@
+GET http://localhost:80/api_get.php?user_id=51628&link=https://example.com
+Accept: application/json
+
+###
+POST http://localhost:80/api_post.php
+Content-Type: application/json
+
+{
+  "user_id": 51628,
+  "link": "https://example.com"
+}
+
+###
+
