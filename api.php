@@ -3,6 +3,7 @@ function methodGET() {
     if (!isset($_GET['user'])) {
         http_response_code(400);
         header("HTTP/1.1 400 Bad Request");
+        header("Content-Type: application/json");
         die(json_encode([
             'success' => false,
             'error' => "No user ID provided in the GET request!"
@@ -10,6 +11,7 @@ function methodGET() {
     }
     if(!isset($_GET['link'])) {
         http_response_code(400);
+        header("Content-Type: application/json");
         die(json_encode([
             'success' => false,
             'error' => "No link provided in the GET request!"
@@ -18,6 +20,7 @@ function methodGET() {
     $url = urldecode($_GET['link']);
     if (strpos($url, 'https') === false || strpos($url, 'http') === false) {
         http_response_code(400);
+        header("Content-Type: application/json");
         die(json_encode([
             'success' => false,
             'error' => "Invalid link format provided in the request!"
@@ -27,6 +30,7 @@ function methodGET() {
     $base .= "/" . rand(100, 1000) . "." . rand(999, 10000000) . "/dynamic/?r=";
     $base .= base64_encode(urlencode($_GET['link']));
     if (!isset($_GET['plain'])) {
+        header("Content-Type: application/json");
         die(json_encode([
             'success' => true,
             'link' => $base
@@ -39,6 +43,7 @@ function methodGET() {
 function methodPOST() {
     $post = json_decode(file_get_contents("php://input"));
     if (!isset($post['user'])) {
+        header("Content-Type: application/json");
         http_response_code(400);
         die(json_encode([
             'success' => false,
@@ -47,6 +52,7 @@ function methodPOST() {
     }
     if (!isset($post['link'])) {
         http_response_code(400);
+        header("Content-Type: application/json");
         die(json_encode([
             'success' => false,
             'error' => "No link provided in the POST request!"
@@ -55,6 +61,7 @@ function methodPOST() {
     $url = $post['link'];
     if (strpos($url, 'https') === false || strpos($url, 'http') === false) {
         http_response_code(400);
+        header("Content-Type: application/json");
         die(json_encode([
             'success' => false,
             'error' => "Invalid link format provided in the request!"
@@ -63,6 +70,7 @@ function methodPOST() {
     $base = "https://link-to.net/" . $post['user'];
     $base .= "/" . rand(100, 1000) . "." . rand(999, 10000000) . "/dynamic/?r=";
     $base .= base64_encode(urlencode($post['link']));
+    header("Content-Type: application/json");
     die(json_encode([
         'success' => true,
         'link' => $base
@@ -78,6 +86,7 @@ switch ($_SERVER['REQUEST_METHOD']) {
         break;
     default:
         http_response_code(501);
+        header("Content-Type: application/json");
         die(json_encode([
             'success' => false,
             'error' => "Invalid request method."
